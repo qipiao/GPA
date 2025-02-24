@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算你的GPA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .course {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .course input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .course input[type="number"] {
+            width: 60px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+<div class="container">
+    <h1>GPA计算器</h1>
+    <h4>(课程名称可以不写)</h4>
+    <div id="courses">
+        <div class="course">
+            <input class="name" type="text" placeholder="课程名称">
+            <input class="grade" type="number" placeholder="成绩" min="0" max="100">
+            <input class="credit" type="number" placeholder="学分" min="0" step="0.5">
+        </div>
+    </div>
+    <button id="addCourse">添加课程</button>
+    <button id="calculateGPA">计算GPA</button>
+    <div id="result">  </div>
+    </div>
+<script>
+    var grade = document.getElementsByClassName("grade")
+    var credit = document.getElementsByClassName("credit")
+    var addCourse = document.getElementById("addCourse")
+    var calculateGPA = document.getElementById("calculateGPA")
+
+    //添加课程
+    addCourse.onclick = function(event){
+        var coursesDiv = document.getElementById('courses');
+        var newCourse = document.createElement('div');
+        newCourse.className = 'course';
+        newCourse.innerHTML = `
+            <input class="name" type="text" placeholder="课程名称">
+            <input class="grade" type="number" placeholder="成绩" min="0" max="100">
+            <input class="credit" type="number" placeholder="学分" min="0" step="0.5">
+        `;
+        coursesDiv.appendChild(newCourse);
+    }
+
+    //计算GPA并给出结果
+    calculateGPA.onclick = function(event){
+        //计算GPA
+        creditSum = 0
+        GP = 0
+        for (var i = 0 ; credit[i] ; i++) { 
+            creditSum += Number(credit[i].value)   //计算总学分   注意转换数据类型
+            GP += (Number(grade[i].value)-50)/10 * Number(credit[i].value)  //计算绩点
+        }
+        GPA = Math.round(GP/creditSum * 100) / 100    //计算平均绩点并保留两位小数
+
+        //显示结果
+        if (creditSum > 0) {
+            document.getElementById('result').innerText = `你的GPA是: ${GPA}`;
+        } else {
+            document.getElementById('result').innerText = '请输入有效的课程信息';
+        }
+    }
+
+</script>
+</body>
+</html>
